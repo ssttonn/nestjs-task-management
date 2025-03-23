@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateTaskBody {
-    @IsString()
-    @IsNotEmpty()
-    title: string
+  @IsString()
+  @IsNotEmpty()
+  title: string;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 }
