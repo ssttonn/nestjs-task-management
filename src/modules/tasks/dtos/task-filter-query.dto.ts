@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { TaskStatus } from '../models/task.model';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { TaskStatus } from '@prisma/client';
 
 export class TaskFilterQuery {
   @IsOptional()
