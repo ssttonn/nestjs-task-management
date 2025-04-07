@@ -18,25 +18,29 @@ export class TasksService {
 
     const tasks = await this.prismaService.task.findMany({
       where: {
-        OR: [
-          {
-            title: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-          {
-            description: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-        ],
-        AND: {
-          status: {
-            in: statuses,
-          },
-        },
+        OR: search
+          ? [
+              {
+                title: {
+                  contains: search,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                description: {
+                  contains: search,
+                  mode: 'insensitive',
+                },
+              },
+            ]
+          : undefined,
+        AND: statuses
+          ? {
+              status: {
+                in: statuses,
+              },
+            }
+          : undefined,
       },
     });
 

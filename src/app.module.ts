@@ -2,6 +2,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { AuthGuard } from './modules/shared/guards/auth.guard';
 
 @Module({
   imports: [TasksModule, SharedModule, AuthModule],
@@ -18,6 +19,10 @@ import { AuthModule } from './modules/auth/auth.module';
           },
           stopAtFirstError: true,
         }),
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
     },
   ],
   controllers: [],
