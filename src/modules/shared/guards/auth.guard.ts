@@ -8,6 +8,8 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { IS_PUBLIC_ENDPOINT } from '../decorators/public-endpoint.decorator';
 import { Request } from 'express';
+import { AuthenticatedUser } from 'src/modules/auth/dtos/authenticated-user.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -34,11 +36,11 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync<User>(token, {
         secret: 'sstonn',
       });
 
-      request['session'] = payload;
+      request.scope.currentUser = payload;
     } catch {
       throw new UnauthorizedException();
     }
@@ -47,8 +49,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-
-    return type === 'Bearer' ? token : undefined;
+    return request.scope.accessToken;
   }
 }

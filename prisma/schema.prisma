@@ -33,10 +33,9 @@ model Task {
     status      TaskStatus @default(PENDING)
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @updatedAt
-    User        User?      @relation(fields: [userId], references: [id])
-    userId      Int?
+    owner       User?      @relation(fields: [ownerId], references: [id])
+    ownerId     Int?
 
-    @@unique([title, userId])
-    @@index([id, title, description, status, createdAt, updatedAt, userId])
+    @@index([id, title, description, status, createdAt, updatedAt])
     @@map("tasks")
 }

@@ -71,17 +71,11 @@ export class AuthService {
   }
 
   private async createAuthSession(user: User): Promise<AuthSession> {
+    const { password, ...userInfo } = user;
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-        },
-        {
-          expiresIn: '8h',
-        },
-      ),
+      this.jwtService.signAsync(userInfo, {
+        expiresIn: '8h',
+      }),
       this.jwtService.signAsync(
         {
           id: user.id,
@@ -92,7 +86,6 @@ export class AuthService {
       ),
     ]);
 
-    const { password, ...userInfo } = user;
     const authSession: AuthSession = {
       accessToken,
       refreshToken,

@@ -1,8 +1,9 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthGuard } from './modules/shared/guards/auth.guard';
+import { ScopeMiddleware } from './modules/shared/middlewares/scope.middleware';
 
 @Module({
   imports: [TasksModule, SharedModule, AuthModule],
@@ -27,4 +28,8 @@ import { AuthGuard } from './modules/shared/guards/auth.guard';
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ScopeMiddleware).forRoutes('*');
+  }
+}
